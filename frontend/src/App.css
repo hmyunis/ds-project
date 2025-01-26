@@ -1,4 +1,4 @@
-/* Center the chatroom on the page */
+
 .chatroom-container {
   display: flex;
   justify-content: center;
@@ -21,7 +21,6 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* Adjust the input layout */
 .chat-inputs {
   margin-bottom: 10px;
   display: flex;
@@ -49,7 +48,6 @@ h2 {
   background-color: #0056b3;
 }
 
-/* Emoji button */
 .chat-inputs button:nth-child(3) {
   background-color: #ffcc00;
 }
@@ -58,7 +56,6 @@ h2 {
   background-color: #e6b800;
 }
 
-/* Chat window styling */
 .chat-window {
   height: 300px;
   border: 1px solid #ccc;
@@ -87,11 +84,11 @@ h2 {
 }
 
 .username {
-  margin-right: 5px; /* Add some space between username and timestamp */
+  margin-right: 5px; 
 }
 
 .timestamp {
-  margin-left: 5px; /* Ensure a small space between 'at' and the timestamp */
+  margin-left: 5px; 
 }
 
 .chat-avatar {
@@ -106,7 +103,6 @@ h2 {
   color: gray;
 }
 
-/* Adjust button styles */
 button {
   cursor: pointer;
 }
