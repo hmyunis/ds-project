@@ -21,8 +21,12 @@ The Go backend serves as a WebSocket server for handling real-time communication
 
 1. **Navigate to the real-time-chat/ directory**:
 ```bash
-cd real-time-chat/
+cd backend/
 ```
+1.1 ** Open the handlers/database.go file.
+
+Replace the dsn string in the InitializeDatabase function with your MySQL username and password:
+dsn := "your_username:your_password@tcp(127.0.0.1:3306)/chatapp" **
 2. **Install dependencies (if any are added)**:
 ```bash
 go mod tidy
@@ -56,7 +60,7 @@ The React frontend serves as the user interface for the chat room.
 ### Steps to Run the Frontend
 1. **Navigate to the chatroom/ directory**:
 ```bash
-cd chatroom/
+cd frontend/
 ```
 2. **Install dependencies**:
 ```bash
