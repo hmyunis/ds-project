@@ -23,7 +23,11 @@ The Go backend serves as a WebSocket server for handling real-time communication
 ```bash
 cd backend/
 ```
-1.1 ** Open the handlers/database.go file.
+1.1 Database Setup Instructions
+    Import the Database: cd database 
+                         mysql -u your_mysql_username -p < chatapp.sql    ....  Replace your_mysql_username with your actual MySQL username (e.g., root). You'll be prompted to enter your MySQL password.
+
+1.2 ** Open the handlers/database.go file.
 
 Replace the dsn string in the InitializeDatabase function with your MySQL username and password:
 dsn := "your_username:your_password@tcp(127.0.0.1:3306)/chatapp" **
