@@ -14,8 +14,7 @@ func InitializeDatabase() {
 	var err error
 
 	// Replace with your MySQL credentials
-	dsn := "root:Password1234!@#$.@tcp(127.0.0.1:3306)/chatapp"
-	DB, err = sql.Open("mysql", dsn)
+	DB, err = sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/chatapp")
 	if err != nil {
 		log.Fatal("Failed to connect to MySQL:", err)
 	}
