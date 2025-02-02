@@ -1,9 +1,10 @@
 package ws
 
 type Room struct {
-	ID      string             `json:"id"`
-	Name    string             `json:"name"`
-	Clients map[string]*Client `json:"clients"`
+	ID       string             `json:"id"`
+	Name     string             `json:"name"`
+	Clients  map[string]*Client `json:"clients"`
+	Messages []*Message         `json:"messages"`
 }
 
 type Hub struct {
@@ -51,7 +52,7 @@ func (h *Hub) Run() {
 
 		case m := <-h.Broadcast:
 			if _, ok := h.Rooms[m.RoomID]; ok {
-
+				h.Rooms[m.RoomID].Messages = append(h.Rooms[m.RoomID].Messages, m)
 				for _, cl := range h.Rooms[m.RoomID].Clients {
 					cl.Message <- m
 				}

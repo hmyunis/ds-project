@@ -30,6 +30,29 @@ const index = () => {
     }
 
     const roomId = conn.url.split('/')[5]
+    async function getMessages() {
+      try {
+        const res = await fetch(`${API_URL}/ws/getMessages/${roomId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        })
+        const data = await res.json()
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].username == user?.username) {
+            data[i].type = 'self'
+          }else {
+            data[i].type = 'recv'
+          }
+        }
+        if (data.length > 0) {
+          setMessage(data)
+        }
+      }catch (e) {
+        console.error(e)
+      }
+    }
+    getMessages()
+
     async function getUsers() {
       try {
         const res = await fetch(`${API_URL}/ws/getClients/${roomId}`, {

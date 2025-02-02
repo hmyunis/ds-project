@@ -22,6 +22,12 @@ type CreateRoomReq struct {
 	Name string `json:"name"`
 }
 
+func (h *Handler) GetMessagesInRoom(c *gin.Context) {
+	roomId := c.Param("roomId")
+
+	c.JSON(http.StatusOK, h.hub.Rooms[roomId].Messages)
+}
+
 func (h *Handler) CreateRoom(c *gin.Context) {
 	var req CreateRoomReq
 	if err := c.ShouldBindJSON(&req); err != nil {
