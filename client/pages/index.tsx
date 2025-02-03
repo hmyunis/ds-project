@@ -5,6 +5,7 @@ import { WEBSOCKET_URL } from '../constants'
 import { AuthContext } from '../modules/auth_provider'
 import { WebsocketContext } from '../modules/websocket_provider'
 import { useRouter } from 'next/router'
+import { log } from 'console'
 
 const index = () => {
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([])
@@ -57,13 +58,16 @@ const index = () => {
   }
 
   const joinRoom = (roomId: string) => {
-    const ws = new WebSocket(
-      `${WEBSOCKET_URL}/ws/joinRoom/${roomId}?userId=${user.id}&username=${user.username}`
-    )
-    if (ws.OPEN) {
-      setConn(ws)
-      router.push('/app')
-      return
+    console.log(user)
+    if (user.username != "") {
+      const ws = new WebSocket(
+        `${WEBSOCKET_URL}/ws/joinRoom/${roomId}?userId=${user.id}&username=${user.username}`
+      )
+      if (ws.OPEN) {
+        setConn(ws)
+        router.push('/app')
+        return
+      }
     }
   }
 

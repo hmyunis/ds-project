@@ -44,6 +44,13 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [authenticated])
 
+  const logout = () => {
+    localStorage.removeItem('user_info')
+    setAuthenticated(false)
+    setUser({ username: '', id: '' })
+    router.push('/login')
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -54,6 +61,12 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       {children}
+      <button
+            className='bg-red border text-white rounded-md p-2 md:ml-4'
+            onClick={logout}
+          >
+            logout
+      </button>
     </AuthContext.Provider>
   )
 }
