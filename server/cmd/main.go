@@ -18,6 +18,9 @@ func main() {
 	userSvc := user.NewService(userRep)
 	userHandler := user.NewHandler(userSvc)
 
+	mongoURI := "mongodb+srv://root:password1234@cluster0.21sbi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+	ws.ConnectDB(mongoURI)
+
 	hub := ws.NewHub()
 	wsHandler := ws.NewHandler(hub)
 	go hub.Run()

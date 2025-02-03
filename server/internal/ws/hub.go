@@ -1,5 +1,9 @@
 package ws
 
+import (
+	"log"
+)
+
 type Room struct {
 	ID       string             `json:"id"`
 	Name     string             `json:"name"`
@@ -15,8 +19,14 @@ type Hub struct {
 }
 
 func NewHub() *Hub {
+	rooms, err := GetRooms() //Changed from db.GetRooms
+	if err != nil {
+		log.Println("Failed to get rooms from db", err)
+		rooms = make(map[string]*Room) // Initialize with empty map if there is an error
+	}
+
 	return &Hub{
-		Rooms:      make(map[string]*Room),
+		Rooms:      rooms,
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
 		Broadcast:  make(chan *Message, 5),
@@ -32,6 +42,7 @@ func (h *Hub) Run() {
 
 				if _, ok := r.Clients[cl.ID]; !ok {
 					r.Clients[cl.ID] = cl
+					SaveRoom(r) //Changed from db.SaveRoom
 				}
 			}
 		case cl := <-h.Unregister:
@@ -44,9 +55,12 @@ func (h *Hub) Run() {
 							Username: cl.Username,
 						}
 					}
-
 					delete(h.Rooms[cl.RoomID].Clients, cl.ID)
 					close(cl.Message)
+					err := SaveRoom(h.Rooms[cl.RoomID]) //Changed from db.SaveRoom
+					if err != nil {
+						log.Println("Failed to save room to db after user unregister:", err)
+					}
 				}
 			}
 
@@ -56,6 +70,7 @@ func (h *Hub) Run() {
 				for _, cl := range h.Rooms[m.RoomID].Clients {
 					cl.Message <- m
 				}
+				SaveRoom(h.Rooms[m.RoomID]) //Changed from db.SaveRoom
 			}
 		}
 	}

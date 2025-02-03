@@ -25,7 +25,12 @@ type CreateRoomReq struct {
 func (h *Handler) GetMessagesInRoom(c *gin.Context) {
 	roomId := c.Param("roomId")
 
-	c.JSON(http.StatusOK, h.hub.Rooms[roomId].Messages)
+	if _, ok := h.hub.Rooms[roomId]; ok {
+		c.JSON(http.StatusOK, h.hub.Rooms[roomId].Messages)
+		return
+	}
+
+	c.JSON(http.StatusNotFound, gin.H{"error": "Room not found"})
 }
 
 func (h *Handler) CreateRoom(c *gin.Context) {
@@ -35,10 +40,17 @@ func (h *Handler) CreateRoom(c *gin.Context) {
 		return
 	}
 
-	h.hub.Rooms[req.ID] = &Room{
+	newRoom := &Room{
 		ID:      req.ID,
 		Name:    req.Name,
 		Clients: make(map[string]*Client),
+	}
+
+	h.hub.Rooms[req.ID] = newRoom
+
+	if err := SaveRoom(newRoom); err != nil { //Changed from db.SaveRoom
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save room to DB"})
+		return
 	}
 
 	c.JSON(http.StatusOK, req)
@@ -62,6 +74,11 @@ func (h *Handler) JoinRoom(c *gin.Context) {
 	roomID := c.Param("roomId")
 	clientID := c.Query("userId")
 	username := c.Query("username")
+
+	if _, ok := h.hub.Rooms[roomID]; !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Room does not exist"})
+		return
+	}
 
 	cl := &Client{
 		Conn:     conn,
@@ -114,6 +131,7 @@ func (h *Handler) GetClients(c *gin.Context) {
 	if _, ok := h.hub.Rooms[roomId]; !ok {
 		clients = make([]ClientRes, 0)
 		c.JSON(http.StatusOK, clients)
+		return
 	}
 
 	for _, c := range h.hub.Rooms[roomId].Clients {
@@ -124,4 +142,22 @@ func (h *Handler) GetClients(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, clients)
+}
+
+func (h *Handler) DeleteRoom(c *gin.Context) {
+	roomId := c.Param("roomId")
+
+	if _, ok := h.hub.Rooms[roomId]; !ok {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Room not found"})
+		return
+	}
+
+	delete(h.hub.Rooms, roomId)
+
+	if err := DeleteRoom(roomId); err != nil { //Changed from db.DeleteRoom
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete room from DB"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Room deleted successfully"})
 }

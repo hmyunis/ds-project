@@ -5,3 +5,17 @@ POST http://localhost:8080/signup
     "email": "jack@gmail.com",
     "password": "very nice"
 }
+
+###
+POST http://localhost:8080/ws/createRoom
+
+{
+    "id": 1,
+    "name": "estif"
+}
+
+###
+GET http://localhost:8080/ws/getRooms
+
+###
+DELETE http://localhost:8080/ws/deleteRoom/1

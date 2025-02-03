@@ -35,6 +35,7 @@ func InitRouter(userHandler *user.Handler, wsHandler *ws.Handler) {
 	r.GET("/ws/getRooms", wsHandler.GetRooms)
 	r.GET("/ws/getClients/:roomId", wsHandler.GetClients)
 	r.GET("/ws/getMessages/:roomId", wsHandler.GetMessagesInRoom)
+	r.DELETE("/ws/deleteRoom/:roomId", wsHandler.DeleteRoom)
 }
 
 func Start(addr string) error {
