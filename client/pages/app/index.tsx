@@ -11,6 +11,7 @@ export type Message = {
   client_id: string
   username: string
   room_id: string
+  timestamp: string
   type: 'recv' | 'self'
 }
 
@@ -94,6 +95,7 @@ const index = () => {
 
       user?.username == m.username ? (m.type = 'self') : (m.type = 'recv')
       setMessage([...messages, m])
+      console.log(m.timestamp)
     }
 
     conn.onclose = () => {}
