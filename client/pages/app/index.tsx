@@ -95,7 +95,6 @@ const index = () => {
 
       user?.username == m.username ? (m.type = 'self') : (m.type = 'recv')
       setMessage([...messages, m])
-      console.log(m.timestamp)
     }
 
     conn.onclose = () => {}
