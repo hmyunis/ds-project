@@ -1,4 +1,4 @@
-import { useState, createContext, useEffect } from 'react'
+import { useState, createContext, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 
 export type UserInfo = {
@@ -51,6 +51,46 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     router.push('/login')
   }
 
+   // Ref for Vanta.js background
+   const vantaRef = useRef<HTMLDivElement>(null)
+
+   useEffect(() => {
+     const loadVanta = async () => {
+       const script = document.createElement('script')
+       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js'
+       script.async = true
+       script.onload = () => {
+         const vantaScript = document.createElement('script')
+         vantaScript.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js'
+         vantaScript.async = true
+         vantaScript.onload = () => {
+           if (vantaRef.current) {
+             // @ts-ignore
+             window.VANTA.WAVES({
+               el: vantaRef.current,
+               mouseControls: true,
+               touchControls: true,
+               gyroControls: false,
+               minHeight: 200.0,
+               minWidth: 200.0,
+               scale: 1.0,
+               color: 0x003366, // Dark blue waves
+               shininess: 35.0,
+               waveHeight: 20.0,
+               waveSpeed: 0.5,
+               zoom: 0.75,
+             })
+           }
+         }
+         document.body.appendChild(vantaScript)
+       }
+       document.body.appendChild(script)
+     }
+ 
+     loadVanta()
+   }, [])
+ 
+
   return (
     <AuthContext.Provider
       value={{
@@ -60,12 +100,15 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         setUser: setUser,
       }}
     >
+      {/* Vanta.js Background */}
+      <div ref={vantaRef} className="absolute top-0 left-0 w-full h-full -z-10"></div>
+      
       {children}
       <button
-            className='bg-red border text-white rounded-md p-2 md:ml-4'
+            className='bg-red-600 hover:bg-red-500 fixed bottom-2 left-2 text-white rounded-md py-2 px-4'
             onClick={logout}
           >
-            logout
+            Log out
       </button>
     </AuthContext.Provider>
   )

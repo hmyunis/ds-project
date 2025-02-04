@@ -5,28 +5,23 @@ const ChatBody = ({ data }: { data: Array<Message> }) => {
   return (
     <>
       {data.map((message: Message, index: number) => {
-        if (message.type == 'self') {
+        if (message.type === 'self') {
           return (
-            <div
-              className='flex flex-col mt-2 w-full text-right justify-end'
-              key={index}
-            >
-              <div className='text-sm'>{message.username}</div>
-              <div>
-                <div className='bg-blue text-white px-4 py-1 rounded-md inline-block mt-1'>
-                  {message.content}
-                </div>
+            <div className='max-w-[60%] ml-auto' key={index}>
+              <span className='username text-right block text-cyan-300'>{message.username}</span>
+              <div className='bg-gradient-to-l from-cyan-400 to-blue-500 text-white p-3 rounded-xl rounded-tr-none'>
+                <p>{message.content}</p>
+                <span className='text-xs text-white/70 mt-1 block'>{message.timestamp}</span>
               </div>
             </div>
           )
         } else {
           return (
-            <div className='mt-2' key={index}>
-              <div className='text-sm'>{message.username}</div>
-              <div>
-                <div className='bg-grey text-dark-secondary px-4 py-1 rounded-md inline-block mt-1'>
-                  {message.content}
-                </div>
+            <div className='max-w-[60%]' key={index}>
+              <span className='username text-white/80'>{message.username}</span>
+              <div className='bg-white/20 backdrop-blur-sm text-white p-3 rounded-xl rounded-tl-none'>
+                <p>{message.content}</p>
+                <span className='text-xs text-white/50 mt-1 block'>{message.timestamp}</span>
               </div>
             </div>
           )
