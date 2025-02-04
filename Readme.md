@@ -26,3 +26,10 @@ npm install
 npm run dev
 
 Open localhost:3000 on your browser and play around. Signup, then log in, then chat.
+
+ Group members             ID No.
+1. ESTIFANOS TAYE        UGR/7285/14
+2. HAMDI MOHAMMED        UGR/8929/14
+3. MOTI LEGGESE          UGR/5389/14
+4. YORDANOS ZEGEYE       UGR/6316/14
+5. ZEAMANUEL ADMASU      UGR/8908/14 
