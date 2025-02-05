@@ -9,8 +9,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+//mogodb connection test
 
-func TestMongoDBInsert(t *testing.T) {
+func TestMongoDBConnection(t *testing.T) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb+srv://root:password1234@cluster0.21sbi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"))
 	assert.Nil(t, err)
 

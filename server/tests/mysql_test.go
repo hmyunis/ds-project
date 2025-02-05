@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
 )
-
+//mysql connection test
 func TestMySQLConnection(t *testing.T) {
 	dsn := "root:2405@tcp(localhost:3306)/chatapp"
 	db, err := sql.Open("mysql", dsn)

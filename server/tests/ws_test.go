@@ -20,7 +20,6 @@ func testWebSocketServer(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	// Simple echo response for testing
 	for {
 		_, msg, err := conn.ReadMessage()
 		if err != nil {
@@ -30,23 +29,24 @@ func testWebSocketServer(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// test a web socket connection
 func TestWebSocketConnection(t *testing.T) {
-	// Start a test WebSocket server
+	//starting server
 	server := httptest.NewServer(http.HandlerFunc(testWebSocketServer))
 	defer server.Close()
 
-	wsURL := "ws" + server.URL[4:] // Convert http:// to ws://
+	wsURL := "ws" + server.URL[4:]
 	conn, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
 	assert.NoError(t, err, "WebSocket connection failed")
 
 	defer conn.Close()
 
-	// Send a test message
+	// send a msg
 	message := "Hello WebSocket"
 	err = conn.WriteMessage(websocket.TextMessage, []byte(message))
 	assert.NoError(t, err, "Failed to send message")
 
-	// Read the response
+	// read the sent msg
 	_, response, err := conn.ReadMessage()
 	assert.NoError(t, err, "Failed to read message")
 	assert.Equal(t, message, string(response), "Response did not match")

@@ -14,7 +14,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// MockUserService implements the user.Service interface for testing
+// Setting up the MockUserService that implements the eser.service interface 
+
 type MockUserService struct{}
 
 func (m *MockUserService) CreateUser(ctx context.Context, req *user.CreateUserReq) (*user.CreateUserRes, error) {
@@ -24,12 +25,12 @@ func (m *MockUserService) CreateUser(ctx context.Context, req *user.CreateUserRe
 func (m *MockUserService) Login(ctx context.Context, req *user.LoginUserReq) (*user.LoginUserRes, error) {
 	return &user.LoginUserRes{}, nil
 }
-
+//test the signup functionality(test if a user is successfully created)
 func TestUserSignup(t *testing.T) {
 	router := gin.Default()
 
-	mockService := &MockUserService{}       // ✅ Create the mock service
-	handler := user.NewHandler(mockService) // ✅ Pass it to NewHandler
+	mockService := &MockUserService{}       
+	handler := user.NewHandler(mockService) 
 	router.POST("/signup", handler.CreateUser)
 
 	signupData := `{"username": "testuser", "email": "test@example.com", "password": "securepass"}`
@@ -42,11 +43,12 @@ func TestUserSignup(t *testing.T) {
 	assert.Equal(t, http.StatusCreated, w.Code, "Expected 201 Created")
 }
 
+// test the login functionality
 func TestUserLogin(t *testing.T) {
 	router := gin.Default()
 
-	mockService := &MockUserService{}       // ✅ Create the mock service
-	handler := user.NewHandler(mockService) // ✅ Pass it to NewHandler
+	mockService := &MockUserService{}       
+	handler := user.NewHandler(mockService) 
 	router.POST("/login", handler.Login)
 
 	reqBody, _ := json.Marshal(map[string]string{
