@@ -68,7 +68,7 @@ func TestCreateUserHandler(t *testing.T) {
 	handler.CreateUser(c)
 
 	// Assert
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusCreated, w.Code)
 	assert.Contains(t, w.Body.String(), `"username":"testuser"`)
 	mockService.AssertExpectations(t) // Verify that the mock service was called as expected
 }
